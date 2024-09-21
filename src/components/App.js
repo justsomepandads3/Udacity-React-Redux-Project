@@ -4,6 +4,7 @@ import  {handleInitialData}  from "../actions/shared";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import Question from "./Question";
 function App(props) {
   const nav = useNavigate("/")
   useEffect(() =>{
@@ -16,6 +17,7 @@ function App(props) {
     <div>
       <Routes>
         <Route path="/" exact element={<Login/>}></Route>
+        <Route path="/question/:id" element={<Question></Question>}></Route>
         <Route path="/dashboard" element={ <Dashboard/>}></Route>
       </Routes>
     </div>
