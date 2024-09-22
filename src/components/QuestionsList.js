@@ -16,10 +16,11 @@ const QuestionsList = (props) =>{
     //Logic for Unanswered questions and answered questions
     const questionList= () =>{
         questions =  questions.filter(question => !question.optionOne.votes.includes(`${props.authedUser}`) && !question.optionTwo.votes.includes(`${props.authedUser}`))
-        console.log(questions)
+        
     }
     const doneQuestionsList = () =>{
       questions =  questions.filter(question => question.optionOne.votes.includes(`${props.authedUser}`) || question.optionTwo.votes.includes(`${props.authedUser}`))
+      
       
     }
     //====================================================

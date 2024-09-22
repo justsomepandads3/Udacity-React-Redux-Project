@@ -2,10 +2,7 @@ import { useState } from "react";
 import image from "../utils/LoginPageImage.svg"
 import { connect } from "react-redux";
 import { _getUsers } from "../utils/_DATA";
-import { getInitialData } from "../utils/api";
-import  {handleInitialData}  from "../actions/shared";
 import { setAuthedUser } from "../actions/authedUser";
-import authedUser from "../reducers/authedUser";
 import { useNavigate } from "react-router-dom";
 const Login = (props) =>{
     const nav=useNavigate("/")
@@ -17,7 +14,7 @@ const Login = (props) =>{
     //The error part is inspired by code with yourself https://www.youtube.com/watch?v=S6pp_bpgMJg
     const [errors,setErrors] = useState({});
   
-    let count = 0;
+
     const loginCred = () =>{
         users.forEach(user =>{
             if(user.id===username && user.password===password){

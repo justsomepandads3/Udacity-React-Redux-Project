@@ -1,6 +1,6 @@
 import { GET_AUTHEDUSER, SET_AUTHEDUSER } from "../actions/authedUser";
 
-export default function authedUser (state = null, action) {
+export default function authedUser (state = "zoshikanlu", action) {
     switch(action.type){
 
         case SET_AUTHEDUSER:

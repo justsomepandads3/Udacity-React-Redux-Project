@@ -1,3 +1,4 @@
+
 export const GET_AUTHEDUSER = "GET_AUTHEDUSER";
 export const SET_AUTHEDUSER = "SET_AUTHEDUSER";
 
@@ -11,5 +12,11 @@ export function setAuthedUser(id){
     return{
         type: SET_AUTHEDUSER,
         id,
+    }
+}
+
+export function setAuthedUserToNull(){
+    return(dispatch) =>{
+        dispatch(setAuthedUser(null))
     }
 }

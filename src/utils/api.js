@@ -1,3 +1,4 @@
+import quesitons from "../reducers/questions"
 import { 
     _getUsers,
     _getQuestions,
@@ -14,5 +15,9 @@ export function getInitialData () {
       users,
       questions,
     }))
+}
+
+export function saveQuestion(quesiton){
+  return _saveQuestion(quesiton)
 }
 
