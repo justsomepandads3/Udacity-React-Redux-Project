@@ -2,7 +2,7 @@ const CompletedStatCard=(props) => {
     return(
         <div className="stat-container">
             <div className="stat-p">
-                <h2>{props.title}</h2>
+                <h3>{props.title}</h3>
                 <h1>{props.stat}</h1>
                 <img ></img>
             </div>

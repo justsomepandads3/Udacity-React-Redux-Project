@@ -1,14 +1,11 @@
 import { connect } from "react-redux";
-import { Fragment, useEffect } from "react";
 import CompletedStat from "./CompletedStat";
 import avatarDefault from "../utils/profile-default-svgrepo.svg"
 import {withRouter} from  "../utils/helpers"
-import { useNavigate } from "react-router-dom";
 import { handleSaveQuestionAnswer } from "../actions/questions";
 
 
 const Question = (props) =>{
-    
     const qid =props.id;
     const authedUser = props.authedUser;
     
@@ -17,18 +14,15 @@ const Question = (props) =>{
 
         props.dispatch(handleSaveQuestionAnswer(info))
         props.changeIsDone()
-        
     }
     
-    
-    console.log(props.user.answers[props.id])
 
     return(
         <div className="question-page-background">
             {props.isDone ?   
                 <div className="question-page-container">
                    <h1 className="question-page-creator">Poll by {props.author}</h1>
-                   <img className="question-page-creator-img" src={avatarDefault}></img>
+                   <img className="question-page-creator-img" src={props.user.avatar ? props.user.avatar: avatarDefault} alt="user profile picture"></img>
                     {
                         props.user.answers[props.id]==="optionOne" ? 
                         <div className="quesiton-page-selction-container">
@@ -72,20 +66,21 @@ const Question = (props) =>{
                 
                     <div className="question-page-container">
                         <h1 className="question-page-creator">Poll by {props.author}</h1>
-                        <img className="question-page-creator-img" src={avatarDefault}></img>
+                        <img className="question-page-creator-img" src={props.user.avatar ? props.user.avatar: avatarDefault} alt="user profile picture"></img>
                         
                         <div >
                             <h1 className="question-page">Would You Rather</h1>
                             <div className="question-page-options">
                                 <button id="optionOne" className="question-page-option" onClick={e => {
                                     const answer = "optionOne"
-                                    completeQuestion({answer,qid, authedUser})}}>
+                                    completeQuestion({authedUser,answer,qid})
+                                }}>
                                     <p>{props.question[0].optionOne.text}</p>
                                     
                                 </button>
                                 <button id="optionTwo" className="question-page-option" onClick={e => {
                                      const answer = "optionTwo"
-                                     completeQuestion({answer,qid, authedUser})
+                                     completeQuestion({authedUser,answer,qid})
                                 }}>
                                     <p>{props.question[0].optionTwo.text}</p>
                                     

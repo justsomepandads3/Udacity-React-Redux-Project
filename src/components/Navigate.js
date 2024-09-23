@@ -18,15 +18,17 @@ const Nav = (props) =>{
                     <h4>{props.authedUser}</h4>
                     <Link className="nav" to={"/"} onClick={setAuthedUserToNull()}>Logout</Link>
                   </div>
-                  <img className="user-info-img" src={avatarDefault}></img>
+                  <img className="user-info-img" src={props.avatar ? props.avatar:avatarDefault} alt="user profile picture"></img>
             </div>
             
         </div>
     )
 }
-const mapStateToProps = ({authedUser})=>{
+const mapStateToProps = ({authedUser,users})=>{
+    const avatar = users[authedUser].avatar;
     return{
         authedUser,
+        avatar,
     }
 }
 export default connect(mapStateToProps)(Nav);

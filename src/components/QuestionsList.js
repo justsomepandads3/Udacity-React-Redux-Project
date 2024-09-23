@@ -1,11 +1,12 @@
 import { connect } from "react-redux"
 import QuesitonsCard from "./QuesionCard"
 import { useNavigate } from "react-router-dom"
+import quesitons from "../reducers/questions"
  
 
 const QuestionsList = (props) =>{
     const nav = useNavigate("")
-    let questions= Object.values(props.questions)
+    let questions= props.quesitonsNotSorted;
     
     const toQuestion = (e, id) =>{
         e.preventDefault();
@@ -56,8 +57,11 @@ const QuestionsList = (props) =>{
     )
 }
 const mapStateToProps = ({questions,authedUser}) =>{
+    const quesitonsNotSorted= Object.values(questions).sort(
+        (a, b) => b.timestamp-a.timestamp
+      )
     return{
-        questions,
+        quesitonsNotSorted,
         authedUser,
     }
 }

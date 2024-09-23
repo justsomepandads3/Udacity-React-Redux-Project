@@ -8,11 +8,14 @@ const CompletedStat = (props) =>{
     }else{
         sameOption = props.question.optionTwo.votes.length
     }
+    const percentage = (partialValue, totalValue) => {
+        return (100 * partialValue) / totalValue;
+     } 
 
     return(
         <div className="stat-container">
-            <CompletedStatCard title={"Number of people selected same answer: "} stat={sameOption}></CompletedStatCard>
-            <CompletedStatCard title={"Total number of Answers: "} stat={props.optionsLength}></CompletedStatCard>
+            <CompletedStatCard title={"Number of other people selected same answer: "} stat={sameOption-1}></CompletedStatCard>
+            <CompletedStatCard title={"Percentage of people selected this option"} stat={`${Math.round(percentage(sameOption,props.optionsLength))}%`}></CompletedStatCard>
         </div>
     )
 }
@@ -23,6 +26,7 @@ const mapStateToProps = ({questions, authedUser},props) => {
     const optionOne = question.optionOne.votes.length;
     const optionTwo = question.optionTwo.votes.length;
     const optionsLength = optionOne+optionTwo;
+    
    
     return{
         question,
