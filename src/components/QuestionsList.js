@@ -1,12 +1,14 @@
-import { connect } from "react-redux"
+import { useSelector } from "react-redux"
 import QuesitonsCard from "./QuesionCard"
 import { useNavigate } from "react-router-dom"
-import quesitons from "../reducers/questions"
  
 
 const QuestionsList = (props) =>{
+    let questions= Object.values(useSelector(state => state.questions)).sort(
+        (a, b) => b.timestamp-a.timestamp
+    );
+    const authedUser = useSelector(state => state.authedUser);
     const nav = useNavigate("")
-    let questions= props.quesitonsNotSorted;
     
     const toQuestion = (e, id) =>{
         e.preventDefault();
@@ -16,11 +18,11 @@ const QuestionsList = (props) =>{
 
     //Logic for Unanswered questions and answered questions
     const questionList= () =>{
-        questions =  questions.filter(question => !question.optionOne.votes.includes(`${props.authedUser}`) && !question.optionTwo.votes.includes(`${props.authedUser}`))
+        questions =  questions.filter(question => !question.optionOne.votes.includes(`${authedUser}`) && !question.optionTwo.votes.includes(`${authedUser}`))
         
     }
     const doneQuestionsList = () =>{
-      questions =  questions.filter(question => question.optionOne.votes.includes(`${props.authedUser}`) || question.optionTwo.votes.includes(`${props.authedUser}`))
+      questions =  questions.filter(question => question.optionOne.votes.includes(`${authedUser}`) || question.optionTwo.votes.includes(`${authedUser}`))
       
       
     }
@@ -56,13 +58,5 @@ const QuestionsList = (props) =>{
             
     )
 }
-const mapStateToProps = ({questions,authedUser}) =>{
-    const quesitonsNotSorted= Object.values(questions).sort(
-        (a, b) => b.timestamp-a.timestamp
-      )
-    return{
-        quesitonsNotSorted,
-        authedUser,
-    }
-}
-export default connect(mapStateToProps)(QuestionsList)
+
+export default QuestionsList;

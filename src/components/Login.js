@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
 import image from "../utils/LoginPageImage.svg"
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { _getUsers } from "../utils/_DATA";
 import { setAuthedUser } from "../actions/authedUser";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./ProtectedRoute";
 const Login = (props) =>{
-    
+    //useAuth hook inspired from https://medium.com/@yogeshmulecraft/implementing-protected-routes-in-react-js-b39583be0740
+    const {login} = useAuth();
+    const users = Object.values(useSelector(state => state.users))
+    const authedUser = useSelector(state => state.authedUser) 
+    const dispatch = useDispatch()
     const nav=useNavigate(props.page)
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     
-    const users = Object.values(props.users);
 
-    //The error part is inspired by code with yourself https://www.youtube.com/watch?v=S6pp_bpgMJg
+    //The error part is inspired from code with yourself https://www.youtube.com/watch?v=S6pp_bpgMJg
     const [errors,setErrors] = useState({});
   
 
@@ -20,19 +24,13 @@ const Login = (props) =>{
        
         users.forEach(user =>{
             if(user.id===username && user.password===password){
-                props.dispatch(setAuthedUser(user.id))
-                console.log(props.path)
+                dispatch(setAuthedUser(user.id))
+                login("dummyToken");
                 if(props.path==="/"){
                     nav("/dashboard")
-                    console.log(props.path)
-                }
-
-                else{ 
+                }else{ 
                     nav(props.path)
-                }
-
-                
-                
+                }   
             }else{
                 setErrors(validate(user.id===username,user.password===password))
             }
@@ -41,7 +39,7 @@ const Login = (props) =>{
         setErrors(validate())
     }
     
-    //The error part is inspired by code with yourself https://www.youtube.com/watch?v=S6pp_bpgMJg
+    //The error part is inspired from code with yourself https://www.youtube.com/watch?v=S6pp_bpgMJg
     const validate = (user=true, pass=true) =>{
        
         const errors = {}
@@ -108,11 +106,5 @@ const Login = (props) =>{
         </div>
     )
 }
-const mapStateToProps = ({ users,questions,authedUser }) => {
-    return{
-    users,
-    questions,
-    authedUser,
-    
-}};
-export default connect(mapStateToProps)(Login);
+
+export default Login;

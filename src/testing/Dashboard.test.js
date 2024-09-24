@@ -19,4 +19,5 @@ describe("Dashboard component", ()=>{
         )
         expect(component).toMatchSnapshot;
     })
+    
 })

@@ -1,129 +1,113 @@
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import CompletedStat from "./CompletedStat";
 import avatarDefault from "../utils/profile-default-svgrepo.svg"
 import {withRouter} from  "../utils/helpers"
 import { handleSaveQuestionAnswer } from "../actions/questions";
-
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import PageNotFound from "./PageNotFound";
 
 const Question = (props) =>{
-    const qid =props.id;
-    const authedUser = props.authedUser;
+    const authedUser = useSelector(state => state.authedUser)
+    const nav = useNavigate(``)
     
+    const {id}= props.router.params;
+    const questions = Object.values(useSelector(state => state.questions))
+    const question = questions.filter(question => question.id===id)[0];
+    const users = useSelector(state => state.users);
+    const dispatch = useDispatch();
+    
+    const user = users[authedUser] 
     const completeQuestion = (info) => {
-
-
-        props.dispatch(handleSaveQuestionAnswer(info))
-        props.changeIsDone()
+        dispatch(handleSaveQuestionAnswer(info))
     }
     
 
     return(
-        <div className="question-page-background">
-            {props.isDone ?   
-                <div className="question-page-container">
-                   <h1 className="question-page-creator">Poll by {props.author}</h1>
-                   <img className="question-page-creator-img" src={props.user.avatar ? props.user.avatar: avatarDefault} alt="user profile picture"></img>
-                    {
-                        props.user.answers[props.id]==="optionOne" ? 
-                        <div className="quesiton-page-selction-container">
-                            <h1 >Your Selected answer is: </h1>
-                            <div className="question-page-options-selected">
+        <div>{ 
+            question ? 
+           
+            <div className="question-page-background">
+                
+                {
+                question.optionOne.votes.includes(`${authedUser}`) || question.optionTwo.votes.includes(`${authedUser}`) ?   
+                    <div className="question-page-container">
+                    <h1 className="question-page-creator">Poll by {question.author}</h1>
+                    <img className="question-page-creator-img" src={user.avatar ? user.avatar: avatarDefault} alt="user profile picture"></img>
+                        {
+                            user.answers[id]==="optionOne" ? 
+                            <div className="quesiton-page-selction-container">
+                                <h1 >Your Selected answer is: </h1>
+                                <div className="question-page-options-selected">
+                                    
+                                    <button id="optionOne" className="question-page-option-selected" >
+                                        <p>{question.optionOne.text}</p>
+                                    </button>
+                                    <button id="optionTwo" className="question-page-option-notSelected" >
+                                        <p>{question.optionTwo.text}</p>
+                                    </button>
+                                    </div>
+                                    <CompletedStat id={id} option={"optionOne"}></CompletedStat>
+                                    
                                 
-                                <button id="optionOne" className="question-page-option-selected" >
-                                    <p>{props.question[0].optionOne.text}</p>
+                            </div>
+                            :
+                            <div className="quesiton-page-selction-container">
+                                <h1 >Your Selected answer is: </h1>
+                                <div className="question-page-options-selected">
+                                
+                                
+                                <button id="optionOne" className="question-page-option-notSelected" >
+                                    
+                                    <p>{question.optionOne.text}</p>
                                 </button>
-                                <button id="optionTwo" className="question-page-option-notSelected" >
-                                    <p>{props.question[0].optionTwo.text}</p>
+                                <button id="optionTwo" className="question-page-option-selected" >
+                                    <p>{question.optionTwo.text}</p>
                                 </button>
                                 </div>
-                                <CompletedStat id={props.id} option={"optionOne"}></CompletedStat>
+                                <CompletedStat id={id} option={"optionTwo"}></CompletedStat>
                                 
-                             
-                        </div>
-                        :
-                        <div className="quesiton-page-selction-container">
-                            <h1 >Your Selected answer is: </h1>
-                            <div className="question-page-options-selected">
+                                
+                            </div> 
+                        }
+                    </div>
+                    
+                    :
+                
+                    
+                        <div className="question-page-container">
+                            <h1 className="question-page-creator">Poll by {question.author}</h1>
+                            <img className="question-page-creator-img" src={user.avatar ? user.avatar: avatarDefault} alt="user profile picture"></img>
                             
-                            
-                            <button id="optionOne" className="question-page-option-notSelected" >
-                                   
-                                <p>{props.question[0].optionOne.text}</p>
-                            </button>
-                            <button id="optionTwo" className="question-page-option-selected" >
-                                <p>{props.question[0].optionTwo.text}</p>
-                            </button>
+                            <div >
+                                <h1 className="question-page">Would You Rather</h1>
+                                <div className="question-page-options">
+                                    <button id="optionOne" className="question-page-option" onClick={e => {
+                                        const answer = "optionOne"
+                                        completeQuestion({authedUser,answer,qid: id})
+                                    }}>
+                                        <p>{question.optionOne.text}</p>
+                                        
+                                    </button>
+                                    <button id="optionTwo" className="question-page-option" onClick={e => {
+                                        const answer = "optionTwo"
+                                        completeQuestion({authedUser,answer,qid: id})
+                                    }}>
+                                        <p>{question.optionTwo.text}</p>
+                                        
+                                    </button>
+                                </div>
                             </div>
-                            <CompletedStat id={props.id} option={"optionTwo"}></CompletedStat>
-                            
-                            
+
                         </div> 
-                    }
-                </div>
                 
-                :
-               
-                
-                    <div className="question-page-container">
-                        <h1 className="question-page-creator">Poll by {props.author}</h1>
-                        <img className="question-page-creator-img" src={props.user.avatar ? props.user.avatar: avatarDefault} alt="user profile picture"></img>
-                        
-                        <div >
-                            <h1 className="question-page">Would You Rather</h1>
-                            <div className="question-page-options">
-                                <button id="optionOne" className="question-page-option" onClick={e => {
-                                    const answer = "optionOne"
-                                    completeQuestion({authedUser,answer,qid})
-                                }}>
-                                    <p>{props.question[0].optionOne.text}</p>
-                                    
-                                </button>
-                                <button id="optionTwo" className="question-page-option" onClick={e => {
-                                     const answer = "optionTwo"
-                                     completeQuestion({authedUser,answer,qid})
-                                }}>
-                                    <p>{props.question[0].optionTwo.text}</p>
-                                    
-                                </button>
-                            </div>
-                        </div>
-
-                    </div> 
-               
-                
-            }
-        </div>
-    )
+                    
+                }
+            </div> 
+            :
+            <PageNotFound></PageNotFound>
+            }   
+        </div> 
+   )
 }
-
-const mapStateToProps = ({users, questions, authedUser}, props) =>{
-    const { id } = props.router.params;
-    
-    
-    const question = Object.values(questions).filter(question => question.id===id);
-    const author = questions[id].author
-    const optionOne =question[0].optionOne.votes;
-    const optionTwo =question[0].optionTwo.votes;
-    const user = users[authedUser]
-    
-    let isDone = false;
-    if(optionOne.includes(`${authedUser}`) || optionTwo.includes(`${authedUser}`)){isDone = true;}
-    
-    const changeIsDone = () =>{
-        isDone=!isDone;
-    }
-    
-    return{
-        id,
-        question,
-        author,
-        authedUser,
-        isDone,
-        user,
-        changeIsDone,
-       
-       
-
-    }
-}
-export default withRouter(connect(mapStateToProps)(Question));
+export default withRouter(Question);

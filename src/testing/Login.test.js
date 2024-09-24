@@ -6,6 +6,7 @@ import middlewares from "../middleware";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import AuthProvider from "../components/ProtectedRoute";
 
 const store = createStore(reducer, middlewares)
 
@@ -14,7 +15,9 @@ describe("Login component", () =>{
         var component = render(
         <Provider store={store}>
             <BrowserRouter>
-                <Login></Login>
+                <AuthProvider>
+                    <Login></Login>
+                </AuthProvider>
             </BrowserRouter>
 
         </Provider>
@@ -25,7 +28,9 @@ describe("Login component", () =>{
         var component = render(
             <Provider store={store}>
                 <BrowserRouter>
+                <AuthProvider>
                     <Login></Login>
+                    </AuthProvider>
                 </BrowserRouter>
     
             </Provider>
@@ -54,7 +59,9 @@ describe("Login component", () =>{
         var component = render(
             <Provider store={store}>
                 <BrowserRouter>
+                    <AuthProvider>
                     <Login></Login>
+                    </AuthProvider>
                 </BrowserRouter>
     
             </Provider>
@@ -82,7 +89,9 @@ describe("Login component", () =>{
         var component = render(
             <Provider store={store}>
                 <BrowserRouter>
+                <AuthProvider>
                     <Login></Login>
+                    </AuthProvider>
                 </BrowserRouter>
     
             </Provider>

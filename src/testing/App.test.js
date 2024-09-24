@@ -7,6 +7,7 @@ import middlewares from "../middleware";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import AuthProvider from "../components/ProtectedRoute";
 
 
 const store = createStore(reducer, middlewares)
@@ -16,7 +17,9 @@ describe("App component" ,()=>{
         var component = render(
         <Provider store={store}>
             <BrowserRouter>
-            <App />
+                <AuthProvider>
+                    <App />
+                </AuthProvider>
             </BrowserRouter>
           </Provider>
           );

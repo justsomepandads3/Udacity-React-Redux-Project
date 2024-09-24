@@ -1,6 +1,6 @@
 import QuestionsList from "./QuestionsList";
 
-const Dashboard = (props) =>{
+const Dashboard = () =>{
     return(
         <div>
             <div className="unanswered">

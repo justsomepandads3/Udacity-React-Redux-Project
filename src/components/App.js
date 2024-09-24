@@ -1,4 +1,4 @@
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react"
 import  {handleInitialData}  from "../actions/shared";
 import Dashboard from "./Dashboard";
@@ -10,23 +10,25 @@ import Nav from "./Navigate";
 import NewQuestion from "./NewQuestion";
 import PageNotFound from "./PageNotFound";
 import Leaderboard from "./Leaderboard";
+import AuthProvider, { useAuth } from "./ProtectedRoute";
+import PrivateRoutes from "./PrivateRoutes";
 function App(props) {
+  const {login, isAuthenticated} = useAuth();
+  const users = useSelector(state => state.users);
+  const questions = useSelector(state => state.questions);
+  const authedUser = useSelector(state => state.authedUser);
+  const dispatch = useDispatch();
   const nav = useNavigate("/")
   const location = useLocation();
   const [page, setPage] = useState('')
-  useEffect(() =>{
-    props.dispatch(handleInitialData());
-    // if(location.pathname=="/question/?id")
-    //     nav("/dashbard")
 
-    if(!props.authedUser){
+  useEffect(() =>{
+    dispatch(handleInitialData());
+    if(!authedUser){
       setPage(`${location.pathname}`);
       nav("/");
-
-    
-    }else if(props.authedUser){
+    }else if(authedUser){ 
       nav(page);
-      console.log(page)
     }
 
   },[])
@@ -35,26 +37,24 @@ function App(props) {
 
   return (
     <div>
-      {props.authedUser && <Nav></Nav>}
-      
-      <Routes>
-        <Route path="/" exact          element={<Login path={page}/>}/>         
-        <Route path="/question/:id"    element={<Question></Question>}/>       
-        <Route path="/dashboard"       element={ <Dashboard/>}/>                
-        <Route path="/add"             element={<NewQuestion></NewQuestion>}/>  
-        <Route path="/leaderboard"     element={<Leaderboard></Leaderboard>}/>  
-        <Route path="*"               element={<PageNotFound/>}/>               
+      {authedUser && <Nav></Nav>}
 
-      </Routes>
+        
+          <Routes>
+            <Route path="/" exact          element={<Login path={page}/>}/> 
+
+            <Route element={<PrivateRoutes></PrivateRoutes>}>
+              <Route path="/question/:id"    element={<Question></Question>}/> 
+              <Route path="/add"             element={<NewQuestion></NewQuestion>}/>     
+            </Route>   
+                         
+            <Route path="/dashboard"       element={ <Dashboard/>}/>                
+            <Route path="/leaderboard"     element={<Leaderboard></Leaderboard>}/>
+            {/* The 404 page was inspired by Anthony Luzquiños from stackoverflow https://stackoverflow.com/a/69878940*/} 
+          </Routes>
     </div>
   );
 }
 
-function mapStateToProps ({users, questions,authedUser}){
-  return({
-    users,
-    questions,
-    authedUser,
-  })
-}
-export default connect(mapStateToProps)(App);
+
+export default App;
