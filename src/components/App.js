@@ -28,6 +28,8 @@ function App(props) {
       setPage(`${location.pathname}`);
       nav("/");
     }else if(authedUser){ 
+
+      login()
       nav(page);
     }
 
