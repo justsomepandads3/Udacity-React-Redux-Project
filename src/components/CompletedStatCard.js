@@ -1,6 +1,6 @@
 const CompletedStatCard=(props) => {
     return(
-        <div className="stat-container">
+        <div>
             <div className="stat-p">
                 <h3>{props.title}</h3>
                 <h1>{props.stat}</h1>

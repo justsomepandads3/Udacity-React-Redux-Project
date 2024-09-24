@@ -230,7 +230,6 @@
 .user-info{
   margin-left: auto; 
   margin-right: 1rem;
-  
 }
 .user-info-img{
   display: block;
@@ -239,7 +238,6 @@
   width: 4%;
   
 }
-
 .vertical-line{
   display: inline;
   margin-left:10px;
@@ -247,20 +245,17 @@
   background-color: black; /* Line color */
   float: left;    
 }
-
 .question-add-submit{
   display: block;
   margin: 0 auto;
   margin-top: 10rem;
   width: 20%;
-  
   background-color: #0dcf54;
   color: #ffffff;
   border-radius: 15px;
   border: none;
   cursor: pointer;
 }
-
 /*=========== Stat CSS ==============*/
 .stat-container{
   display:flex;
@@ -268,17 +263,16 @@
 
 }
 .stat-p{
-  
+  height:90%;
   margin-right: 30px;
   background-color: #f2f2f0;
   display: grid;
   text-align: center;
   border-radius: 20px;
-  width: 45%;
+  width: 70%;
   padding: 20px;
   box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.12);
 }
-
 /*            Leaderboard CSS       */
 .leaderboard-container{
   
@@ -318,20 +312,15 @@
 .leaderboard-data-users{
   display: flex;
 }
-
-
-
-
-
-
-
-
-
 /*            pageNotFound css       */
-
 .page-not-found{
   text-align: center;
   margin-top:40px;
 }
-
+/*         */
+.dashboard-button{
+  display: grid;
+  margin: 0 auto;
+  margin-top: 30px;
+}
 

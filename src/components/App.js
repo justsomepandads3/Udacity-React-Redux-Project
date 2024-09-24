@@ -51,6 +51,7 @@ function App(props) {
             <Route path="/dashboard"       element={ <Dashboard/>}/>                
             <Route path="/leaderboard"     element={<Leaderboard></Leaderboard>}/>
             {/* The 404 page was inspired by Anthony Luzquiños from stackoverflow https://stackoverflow.com/a/69878940*/} 
+            <Route path="*" element={<PageNotFound></PageNotFound>}></Route>
           </Routes>
     </div>
   );

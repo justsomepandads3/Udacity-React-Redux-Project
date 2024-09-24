@@ -3,10 +3,13 @@ import { withRouter } from "../utils/helpers";
 import CompletedStatCard from "./CompletedStatCard";
 const CompletedStat = (props) =>{
     let sameOption = 0;
+    let otherOption = 0;
     if(props.option==="optionOne"){
         sameOption = props.question.optionOne.votes.length
+        otherOption = props.question.optionTwo.votes.length
     }else{
         sameOption = props.question.optionTwo.votes.length
+        otherOption = props.question.optionOne.votes.length
     }
     const percentage = (partialValue, totalValue) => {
         return (100 * partialValue) / totalValue;
@@ -16,6 +19,9 @@ const CompletedStat = (props) =>{
         <div className="stat-container">
             <CompletedStatCard title={"Number of other people selected same answer: "} stat={sameOption-1}></CompletedStatCard>
             <CompletedStatCard title={"Percentage of people selected this option"} stat={`${Math.round(percentage(sameOption,props.optionsLength))}%`}></CompletedStatCard>
+            <CompletedStatCard title={"Number of other people selected the other answer: "} stat={otherOption}></CompletedStatCard>
+            <CompletedStatCard title={"Percentage of people selected the other option"} stat={`${Math.round(percentage(otherOption,props.optionsLength))}%`}></CompletedStatCard>
+            
         </div>
     )
 }
